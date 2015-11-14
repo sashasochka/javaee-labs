@@ -1,20 +1,17 @@
 package data;
 
+import javax.persistence.*;
+
+@Entity
 public class Candidate implements Identifiable {
-    int id;
-    Vacancy vacancy;
-    String name;
-    String resume;
+    private int id;
+    private String name;
+    private String resume;
+    private Vacancy vacancy;
 
-    public Vacancy getVacancy() {
-        return vacancy;
-    }
-
-    public void setVacancy(Vacancy vacancy) {
-        this.vacancy = vacancy;
-    }
-
-    @Override
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     public int getId() {
         return id;
     }
@@ -23,14 +20,24 @@ public class Candidate implements Identifiable {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Candidate{" +
-                "id=" + id +
-                ", vacancy=" + vacancy +
-                ", name='" + name + '\'' +
-                ", resume='" + resume + '\'' +
-                '}';
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
+    @Column(name = "resume")
+    public String getResume() {
+        return resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
     }
 
     @Override
@@ -40,35 +47,24 @@ public class Candidate implements Identifiable {
 
         Candidate candidate = (Candidate) o;
 
-        if (id != candidate.id) return false;
-        if (vacancy != null ? !vacancy.equals(candidate.vacancy) : candidate.vacancy != null) return false;
-        if (name != null ? !name.equals(candidate.name) : candidate.name != null) return false;
-        return !(resume != null ? !resume.equals(candidate.resume) : candidate.resume != null);
+        return id == candidate.id && !(name != null ? !name.equals(candidate.name) : candidate.name != null) && !(resume != null ? !resume.equals(candidate.resume) : candidate.resume != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (vacancy != null ? vacancy.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (resume != null ? resume.hashCode() : 0);
         return result;
     }
 
-    public String getName() {
-        return name;
+    @ManyToOne
+    public Vacancy getVacancy() {
+        return vacancy;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getResume() {
-        return resume;
-    }
-
-    public void setResume(String resume) {
-        this.resume = resume;
+    public void setVacancy(Vacancy vacancy) {
+        this.vacancy = vacancy;
     }
 }

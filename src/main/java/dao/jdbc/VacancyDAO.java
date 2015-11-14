@@ -1,6 +1,7 @@
-package dao;
+package dao.jdbc;
 
-import dao.generic.GenericDaoImpl;
+import dao.DAOFactory;
+import dao.jdbc.generic.GenericDaoImpl;
 import data.Vacancy;
 
 import java.sql.Connection;
@@ -53,7 +54,7 @@ public class VacancyDAO extends GenericDaoImpl<Vacancy> {
                 vacancy.setId(set.getInt("id"));
                 vacancy.setDescription(set.getString("description"));
                 vacancy.setSalary(set.getInt("salary"));
-                vacancy.setPosition(DAOFactory.getInstance().getPositionDAO().findById(
+                vacancy.setPosition(DAOFactory.getJDBCInstance().getPositionDAO().findById(
                         set.getInt("position_id")));
                 result.add(vacancy);
             }

@@ -1,6 +1,6 @@
-package dao;
+package dao.jdbc;
 
-import dao.generic.GenericDaoImpl;
+import dao.jdbc.generic.GenericDaoImpl;
 import data.Company;
 
 import java.sql.Connection;

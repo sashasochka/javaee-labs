@@ -1,37 +1,78 @@
 package dao;
 
-public class DAOFactory {
-    static private DAOFactory instance;
-    private CompanyDAO companyDAO = new CompanyDAO();
-    private PositionDAO positionDAO = new PositionDAO();
-    private CandidateDAO candidateDAO = new CandidateDAO();
-    private VacancyDAO vacancyDAO = new VacancyDAO();
-    private WorkerDAO workerDAO = new WorkerDAO();
+import data.*;
 
-    synchronized static public DAOFactory getInstance() {
-        if (instance == null) {
-            instance = new DAOFactory();
+public class DAOFactory {
+    static private IDAOFactory jdbcInstance;
+    static private IDAOFactory jpaInstance;
+
+    synchronized static public IDAOFactory getJDBCInstance() {
+        if (jdbcInstance == null) {
+            jdbcInstance = new JDBCDAOFactory();
         }
-        return instance;
+        return jdbcInstance;
     }
 
-    public CompanyDAO getCompanyDAO() {
+    synchronized static public IDAOFactory getJPAInstance() {
+        if (jpaInstance == null) {
+            jpaInstance = new JPADAOFactory();
+        }
+        return jpaInstance;
+    }
+}
+
+class JDBCDAOFactory implements IDAOFactory {
+    private GenericDAO<Company> companyDAO = new dao.jdbc.CompanyDAO();
+    private GenericDAO<Position> positionDAO = new dao.jdbc.PositionDAO();
+    private GenericDAO<Candidate> candidateDAO = new dao.jdbc.CandidateDAO();
+    private GenericDAO<Vacancy> vacancyDAO = new dao.jdbc.VacancyDAO();
+    private GenericDAO<Worker> workerDAO = new dao.jdbc.WorkerDAO();
+
+    public GenericDAO<Company> getCompanyDAO() {
         return companyDAO;
     }
 
-    public PositionDAO getPositionDAO() {
+    public GenericDAO<Position> getPositionDAO() {
         return positionDAO;
     }
 
-    public CandidateDAO getCandidateDAO() {
+    public GenericDAO<Candidate> getCandidateDAO() {
         return candidateDAO;
     }
 
-    public VacancyDAO getVacancyDAO() {
+    public GenericDAO<Vacancy> getVacancyDAO() {
         return vacancyDAO;
     }
 
-    public WorkerDAO getWorkerDAO() {
+    public GenericDAO<Worker> getWorkerDAO() {
+        return workerDAO;
+    }
+}
+
+class JPADAOFactory implements IDAOFactory {
+    private GenericDAO<Company> companyDAO = new dao.jpa.CompanyDAO();
+    private GenericDAO<Position> positionDAO = new dao.jpa.PositionDAO();
+    private GenericDAO<Candidate> candidateDAO = new dao.jpa.CandidateDAO();
+    private GenericDAO<Vacancy> vacancyDAO = new dao.jpa.VacancyDAO();
+    private GenericDAO<Worker> workerDAO = new dao.jpa.WorkerDAO();
+
+    public GenericDAO<Company> getCompanyDAO() {
+        return companyDAO;
+    }
+
+    public GenericDAO<Position> getPositionDAO() {
+        return positionDAO;
+    }
+
+    public GenericDAO<Candidate> getCandidateDAO() {
+        return candidateDAO;
+    }
+
+    public GenericDAO<Vacancy> getVacancyDAO() {
+        return vacancyDAO;
+    }
+
+    public GenericDAO<Worker> getWorkerDAO() {
         return workerDAO;
     }
 }

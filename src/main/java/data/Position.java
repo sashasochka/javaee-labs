@@ -1,37 +1,16 @@
 package data;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
 public class Position implements Identifiable {
-    int id;
-    String name;
-    String description;
-    Company company;
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Position{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", company=" + company +
-                '}';
-    }
+    private int id;
+    private String name;
+    private String description;
+    private Company company;
+    private List<Vacancy> vacancies;
+    private List<Worker> workers;
 
     @Override
     public boolean equals(Object o) {
@@ -40,11 +19,7 @@ public class Position implements Identifiable {
 
         Position position = (Position) o;
 
-        if (id != position.id) return false;
-        if (name != null ? !name.equals(position.name) : position.name != null) return false;
-        if (description != null ? !description.equals(position.description) : position.description != null)
-            return false;
-        return !(company != null ? !company.equals(position.company) : position.company != null);
+        return id == position.id && !(name != null ? !name.equals(position.name) : position.name != null) && !(description != null ? !description.equals(position.description) : position.description != null);
 
     }
 
@@ -53,10 +28,32 @@ public class Position implements Identifiable {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (company != null ? company.hashCode() : 0);
         return result;
     }
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
+    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -65,11 +62,30 @@ public class Position implements Identifiable {
         this.description = description;
     }
 
+    @ManyToOne
     public Company getCompany() {
         return company;
     }
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    @OneToMany(mappedBy = "position")
+    public List<Vacancy> getVacancies() {
+        return vacancies;
+    }
+
+    public void setVacancies(List<Vacancy> vacancies) {
+        this.vacancies = vacancies;
+    }
+
+    @OneToMany(mappedBy = "position")
+    public List<Worker> getWorkers() {
+        return workers;
+    }
+
+    public void setWorkers(List<Worker> workers) {
+        this.workers = workers;
     }
 }

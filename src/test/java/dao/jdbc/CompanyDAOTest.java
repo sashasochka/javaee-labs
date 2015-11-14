@@ -1,5 +1,8 @@
-package dao;
+package dao.jdbc;
 
+import dao.DAOFactory;
+import dao.GenericDAO;
+import dao.IDAOFactory;
 import data.Company;
 import org.junit.After;
 import org.junit.Before;
@@ -12,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class CompanyDAOTest {
+    IDAOFactory daoFactory;
     Company microsoft = new Company();
     Company google = new Company();
     Company facebook = new Company();
@@ -28,6 +32,8 @@ public class CompanyDAOTest {
         facebook.setDescription("Biggest social network company");
 
         DBManager.getInstance().initializeDatabase();
+
+        daoFactory = DAOFactory.getJDBCInstance();
     }
 
     @After
@@ -37,7 +43,7 @@ public class CompanyDAOTest {
 
     @Test
     public void testGetAll() throws Exception {
-        CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         companyDAO.insert(microsoft);
         companyDAO.insert(google);
         companyDAO.insert(facebook);
@@ -50,7 +56,7 @@ public class CompanyDAOTest {
 
     @Test
     public void testFindById() throws Exception {
-        CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         companyDAO.insert(microsoft);
         companyDAO.insert(google);
         companyDAO.insert(facebook);
@@ -62,7 +68,7 @@ public class CompanyDAOTest {
 
     @Test
     public void testUpdate() throws Exception {
-        CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         companyDAO.insert(microsoft);
         companyDAO.insert(google);
         companyDAO.insert(facebook);
@@ -78,7 +84,7 @@ public class CompanyDAOTest {
 
     @Test
     public void testDeleteById() throws Exception {
-        CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         companyDAO.insert(microsoft);
         companyDAO.insert(google);
         companyDAO.insert(facebook);
@@ -90,7 +96,7 @@ public class CompanyDAOTest {
 
     @Test
     public void testDelete() throws Exception {
-        CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         companyDAO.insert(microsoft);
         companyDAO.insert(google);
         companyDAO.insert(facebook);

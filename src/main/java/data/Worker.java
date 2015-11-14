@@ -1,12 +1,17 @@
 package data;
 
-public class Worker implements Identifiable {
-    int id;
-    Position position;
-    String name;
-    int salary;
+import javax.persistence.*;
 
-    @Override
+@Entity
+public class Worker implements Identifiable {
+    private int id;
+    private String name;
+    private Integer salary;
+    private Position position;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     public int getId() {
         return id;
     }
@@ -15,14 +20,14 @@ public class Worker implements Identifiable {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Worker{" +
-                "id=" + id +
-                ", position=" + position +
-                ", name='" + name + '\'' +
-                ", salary=" + salary +
-                '}';
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -32,43 +37,34 @@ public class Worker implements Identifiable {
 
         Worker worker = (Worker) o;
 
-        if (id != worker.id) return false;
-        if (salary != worker.salary) return false;
-        if (position != null ? !position.equals(worker.position) : worker.position != null) return false;
-        return !(name != null ? !name.equals(worker.name) : worker.name != null);
+        return id == worker.id && !(name != null ? !name.equals(worker.name) : worker.name != null) && !(salary != null ? !salary.equals(worker.salary) : worker.salary != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (position != null ? position.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + salary;
+        result = 31 * result + (salary != null ? salary.hashCode() : 0);
         return result;
     }
 
+    @Basic
+    @Column(name = "salary")
+    public Integer getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Integer salary) {
+        this.salary = salary;
+    }
+
+    @ManyToOne
     public Position getPosition() {
         return position;
     }
 
     public void setPosition(Position position) {
         this.position = position;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
     }
 }

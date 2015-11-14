@@ -1,5 +1,8 @@
-package dao;
+package dao.jpa;
 
+import dao.DAOFactory;
+import dao.GenericDAO;
+import dao.IDAOFactory;
 import data.Company;
 import data.Position;
 import data.Worker;
@@ -11,6 +14,7 @@ import util.DBManager;
 import static org.junit.Assert.assertEquals;
 
 public class WorkerDAOTest {
+    IDAOFactory daoFactory;
     Company microsoft = new Company();
     Company google = new Company();
     Company facebook = new Company();
@@ -54,6 +58,8 @@ public class WorkerDAOTest {
         terryMyerson.setSalary(5000000);
 
         DBManager.getInstance().initializeDatabase();
+
+        daoFactory = DAOFactory.getJPAInstance();
     }
 
     @After
@@ -63,14 +69,14 @@ public class WorkerDAOTest {
 
     @Test
     public void testGetAll() throws Exception {
-        CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         companyDAO.insert(microsoft);
 
-        PositionDAO positionDAO = DAOFactory.getInstance().getPositionDAO();
+        GenericDAO<Position> positionDAO = daoFactory.getPositionDAO();
         positionDAO.insert(microsoftCEO);
         positionDAO.insert(microsoftCVP);
 
-        WorkerDAO workerDAO = DAOFactory.getInstance().getWorkerDAO();
+        GenericDAO<Worker> workerDAO = daoFactory.getWorkerDAO();
         workerDAO.insert(satyaNadella);
         workerDAO.insert(terryMyerson);
 
@@ -80,14 +86,14 @@ public class WorkerDAOTest {
     @Test
     public void testFindById() throws Exception {
 
-        CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         companyDAO.insert(microsoft);
 
-        PositionDAO positionDAO = DAOFactory.getInstance().getPositionDAO();
+        GenericDAO<Position> positionDAO = daoFactory.getPositionDAO();
         positionDAO.insert(microsoftCEO);
         positionDAO.insert(microsoftCVP);
 
-        WorkerDAO workerDAO = DAOFactory.getInstance().getWorkerDAO();
+        GenericDAO<Worker> workerDAO = daoFactory.getWorkerDAO();
         workerDAO.insert(satyaNadella);
         workerDAO.insert(terryMyerson);
 
@@ -96,16 +102,16 @@ public class WorkerDAOTest {
 
     @Test
     public void testUpdate() throws Exception {
-        CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         companyDAO.insert(microsoft);
         companyDAO.insert(google);
 
-        PositionDAO positionDAO = DAOFactory.getInstance().getPositionDAO();
+        GenericDAO<Position> positionDAO = daoFactory.getPositionDAO();
         positionDAO.insert(microsoftCEO);
         positionDAO.insert(microsoftCVP);
         positionDAO.insert(googleCVP);
 
-        WorkerDAO workerDAO = DAOFactory.getInstance().getWorkerDAO();
+        GenericDAO<Worker> workerDAO = daoFactory.getWorkerDAO();
         workerDAO.insert(satyaNadella);
         workerDAO.insert(terryMyerson);
 

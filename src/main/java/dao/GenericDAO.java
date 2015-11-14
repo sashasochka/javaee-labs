@@ -1,4 +1,4 @@
-package dao.generic;
+package dao;
 
 import data.Identifiable;
 

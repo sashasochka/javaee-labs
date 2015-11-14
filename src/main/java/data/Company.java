@@ -1,11 +1,18 @@
 package data;
 
-public class Company implements Identifiable {
-    int id;
-    String name;
-    String description;
+import javax.persistence.*;
+import java.util.List;
 
-    @Override
+@Entity
+public class Company implements Identifiable {
+    private int id;
+    private String name;
+    private String description;
+    private List<Position> positions;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     public int getId() {
         return id;
     }
@@ -14,6 +21,8 @@ public class Company implements Identifiable {
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -22,13 +31,23 @@ public class Company implements Identifiable {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    @Basic
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @OneToMany(mappedBy = "company")
+    public List<Position> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(List<Position> positions) {
+        this.positions = positions;
     }
 
     @Override
@@ -38,9 +57,7 @@ public class Company implements Identifiable {
 
         Company company = (Company) o;
 
-        if (id != company.id) return false;
-        if (name != null ? !name.equals(company.name) : company.name != null) return false;
-        return !(description != null ? !description.equals(company.description) : company.description != null);
+        return id == company.id && !(name != null ? !name.equals(company.name) : company.name != null) && !(description != null ? !description.equals(company.description) : company.description != null);
 
     }
 
@@ -50,13 +67,5 @@ public class Company implements Identifiable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

@@ -1,6 +1,7 @@
-package dao;
+package dao.jdbc;
 
-import dao.generic.GenericDaoImpl;
+import dao.DAOFactory;
+import dao.jdbc.generic.GenericDaoImpl;
 import data.Position;
 
 import java.sql.Connection;
@@ -53,7 +54,7 @@ public class PositionDAO extends GenericDaoImpl<Position> {
                 position.setId(set.getInt("id"));
                 position.setName(set.getString("name"));
                 position.setDescription(set.getString("description"));
-                position.setCompany(DAOFactory.getInstance().getCompanyDAO().findById(
+                position.setCompany(DAOFactory.getJDBCInstance().getCompanyDAO().findById(
                         set.getInt("company_id")));
                 result.add(position);
             }

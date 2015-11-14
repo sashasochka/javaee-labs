@@ -1,6 +1,7 @@
-package dao;
+package dao.jdbc;
 
-import dao.generic.GenericDaoImpl;
+import dao.DAOFactory;
+import dao.jdbc.generic.GenericDaoImpl;
 import data.Worker;
 
 import java.sql.Connection;
@@ -53,7 +54,7 @@ public class WorkerDAO extends GenericDaoImpl<Worker> {
                 worker.setId(set.getInt("id"));
                 worker.setName(set.getString("name"));
                 worker.setSalary(set.getInt("salary"));
-                worker.setPosition(DAOFactory.getInstance().getPositionDAO().findById(
+                worker.setPosition(DAOFactory.getJDBCInstance().getPositionDAO().findById(
                         set.getInt("position_id")));
                 result.add(worker);
             }

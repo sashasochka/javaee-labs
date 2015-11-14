@@ -1,36 +1,25 @@
 package data;
 
-public class Vacancy implements Identifiable {
-    int id;
-    Position position;
-    String description;
-    int salary;
+import javax.persistence.*;
+import java.util.List;
 
-    @Override
+@Entity
+public class Vacancy implements Identifiable {
+    private int id;
+    private String description;
+    private Integer salary;
+    private List<Candidate> candidates;
+    private Position position;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    @Override
-    public String toString() {
-        return "Vacancy{" +
-                "id=" + id +
-                ", position=" + position +
-                ", description='" + description + '\'' +
-                ", salary=" + salary +
-                '}';
     }
 
     @Override
@@ -40,22 +29,20 @@ public class Vacancy implements Identifiable {
 
         Vacancy vacancy = (Vacancy) o;
 
-        if (id != vacancy.id) return false;
-        if (salary != vacancy.salary) return false;
-        if (position != null ? !position.equals(vacancy.position) : vacancy.position != null) return false;
-        return !(description != null ? !description.equals(vacancy.description) : vacancy.description != null);
+        return id == vacancy.id && !(description != null ? !description.equals(vacancy.description) : vacancy.description != null) && !(salary != null ? !salary.equals(vacancy.salary) : vacancy.salary != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (position != null ? position.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + salary;
+        result = 31 * result + (salary != null ? salary.hashCode() : 0);
         return result;
     }
 
+    @Basic
+    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -64,11 +51,31 @@ public class Vacancy implements Identifiable {
         this.description = description;
     }
 
-    public int getSalary() {
+    @Basic
+    @Column(name = "salary")
+    public Integer getSalary() {
         return salary;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(Integer salary) {
         this.salary = salary;
+    }
+
+    @OneToMany(mappedBy = "vacancy")
+    public List<Candidate> getCandidates() {
+        return candidates;
+    }
+
+    public void setCandidates(List<Candidate> candidates) {
+        this.candidates = candidates;
+    }
+
+    @ManyToOne
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

@@ -1,7 +1,8 @@
 package servlets;
 
-import dao.CompanyDAO;
 import dao.DAOFactory;
+import dao.GenericDAO;
+import dao.IDAOFactory;
 import data.Company;
 
 import javax.servlet.ServletException;
@@ -14,9 +15,11 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = {"/companies"})
 public class CompanyServlet extends HttpServlet {
+    private final IDAOFactory daoFactory = DAOFactory.getJPAInstance();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        final GenericDAO<Company> companyDAO = daoFactory.getCompanyDAO();
         final PrintWriter writer = resp.getWriter();
         resp.setContentType("text/html");
         writer.write("List of companies" +
@@ -46,7 +49,7 @@ public class CompanyServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        final CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
+        final GenericDAO<Company> companyDAO = DAOFactory.getJPAInstance().getCompanyDAO();
 
         final Company company = new Company();
         company.setName(req.getParameter("name"));

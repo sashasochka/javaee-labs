@@ -1,5 +1,6 @@
-package dao.generic;
+package dao.jdbc.generic;
 
+import dao.GenericDAO;
 import data.Identifiable;
 import util.DBManager;
 
@@ -20,7 +21,7 @@ public abstract class GenericDaoImpl<T extends Identifiable> implements GenericD
     @Override
     public List<T> getAll() {
         try (Statement stmt = connection.createStatement()) {
-            final String sql = String.format("SELECT * FROM " + getTableName());
+            final String sql = "SELECT * FROM " + getTableName();
             return mapAll(stmt.executeQuery(sql));
         } catch (final SQLException e) {
             e.printStackTrace();
@@ -30,7 +31,7 @@ public abstract class GenericDaoImpl<T extends Identifiable> implements GenericD
 
     @Override
     public T findById(int id) {
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         try {
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM " + getTableName() + " WHERE id=?");
@@ -77,7 +78,6 @@ public abstract class GenericDaoImpl<T extends Identifiable> implements GenericD
 
     @Override
     public boolean deleteById(int id) {
-        ResultSet resultSet = null;
         try {
             PreparedStatement statement = connection.prepareStatement(
                     "DELETE FROM " + getTableName() + " WHERE id=?");
