@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>List of companies</title>
+</h:head>
+
+<h:body>
+
+    <h1>List of companies</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <ui:repeat value="#{companyListBean.companies}" var="company">
+            <tr>
+                <td><h:outputText value="#{company.id}"/></td>
+                <td><h:outputText value="#{company.name}"/></td>
+                <td><h:outputText value="#{company.description}"/></td>
+            </tr>
+        </ui:repeat>
+    </table>
+
+    <h:form>
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td><h:inputText size="16" value="#{companyAdderBean.company.name}"/></td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><h:inputText size="16" value="#{companyAdderBean.company.description}"/></td>
+            </tr>
+            <tr>
+                <td colspan="2"><h:commandButton value="Submit" action="#{companyAdderBean.add}"/></td>
+            </tr>
+        </table>
+    </h:form>
+</h:body>
+
+</html>
+
