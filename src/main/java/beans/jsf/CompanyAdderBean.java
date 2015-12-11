@@ -1,10 +1,12 @@
-package beans;
+package beans.jsf;
 
-import dao.DAOFactory;
+import beans.ejb.CompanyBean;
 import data.Company;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 @ManagedBean
 @RequestScoped
@@ -19,7 +21,7 @@ public class CompanyAdderBean {
         this.company = company;
     }
 
-    public void add() {
-        DAOFactory.getJPAInstance().getCompanyDAO().insert(company);
+    public void add() throws NamingException {
+        ((CompanyBean) new InitialContext().lookup("java:module/CompanyBean")).save(company);
     }
 }
