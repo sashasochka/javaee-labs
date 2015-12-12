@@ -47,6 +47,11 @@
             <artifactId>ejb-api</artifactId>
             <version>3.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-servlet</artifactId>
+            <version>1.19</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -67,6 +72,46 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <vmArgs>
+                        <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                    </vmArgs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>wsgen</goal>
+                        </goals>
+                        <configuration>
+                            <sei>com.jee.jaxws.endpoint.DirectorServiceImpl</sei>
+                            <genWsdl>true</genWsdl>
+                            <resourceDestDir>${basedir}/src/main/webapp/WEB-INF/wsdl</resourceDestDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>import</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>com.jee.jaxws.client</packageName>
+                            <wsdlFiles>
+                                <wsdlFile>${basedir}/src/main/webapp/WEB-INF/wsdl/DirectorServiceWS.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>http://localhost:8080/lab1-1.0-SNAPSHOT/directorServiceWS?wsdl</wsdlLocation>
+                            <verbose>true</verbose>
+                            <sourceDestDir>${basedir}/src/main/java</sourceDestDir>
+                            <target>2.1</target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

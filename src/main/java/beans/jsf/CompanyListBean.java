@@ -1,12 +1,13 @@
 package beans.jsf;
 
-import beans.ejb.CompanyBean;
+import beans.ejb.CompanyJBean;
 import data.Company;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 @ManagedBean
@@ -14,8 +15,8 @@ import java.util.List;
 public class CompanyListBean {
     List<Company> companies;
 
-    public List<Company> getCompanies() throws NamingException {
-        return ((CompanyBean) new InitialContext().lookup("java:module/CompanyBean")).getCompanies();
+    public List<Company> getCompanies() throws NamingException, MalformedURLException {
+        return ((CompanyJBean) new InitialContext().lookup("java:module/CompanyJBean")).getCompanies();
     }
 
     public void setCompanies(List<Company> companies) {
